@@ -124,7 +124,7 @@ RESTful API for money transfers between accounts.
         "currency": "EUR"
     }
 ``` 
-## Errors
+### Errors
 - 404 - Resource not found:
     - Account not found by id
     - Transaction not found by id
