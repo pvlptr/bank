@@ -6,23 +6,20 @@ import engineering.pvl.bank.account.repository.AccountRepositoryInMemory;
 import engineering.pvl.bank.transaction.model.Transaction;
 import engineering.pvl.bank.transaction.repository.TransactionRepository;
 import engineering.pvl.bank.transaction.repository.TransactionRepositoryInMemory;
-import engineering.pvl.bank.utils.BankOperationException;
-import engineering.pvl.bank.utils.DateTimeUtils;
-import engineering.pvl.bank.utils.ResourceNotFoundException;
+import engineering.pvl.bank.utils.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Month;
 import java.util.Currency;
 import java.util.List;
 import java.util.UUID;
 
-import static engineering.pvl.bank.utils.BankAssertions.assertMoneyAmountEquals;
-import static engineering.pvl.bank.utils.CurrencyUtils.EUR;
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.BankAssertions.assertAmountEquals;
+import static engineering.pvl.bank.utils.MoneyUtils.EUR;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransferServiceImplTest {
@@ -62,12 +59,12 @@ class TransferServiceImplTest {
         assertNotNull(transaction.getId());
         assertEquals(from.getId(), transaction.getFromAccountId());
         assertEquals(to.getId(), transaction.getToAccountId());
-        assertEquals(BigDecimal.valueOf(15.33), transaction.getAmount());
+        assertAmountEquals(15.33, transaction.getAmount());
         assertEquals(EUR, transaction.getCurrency());
         assertEquals(DateTimeUtils.nowUTC(), transaction.getCreated());
 
-        assertEquals(BigDecimal.valueOf(84.77), from.getBalance());
-        assertEquals(BigDecimal.valueOf(65.88), to.getBalance());
+        assertAmountEquals(84.77, from.getBalance());
+        assertAmountEquals(65.88, to.getBalance());
     }
 
     @Test
@@ -82,10 +79,10 @@ class TransferServiceImplTest {
         assertEquals(1, transactions.size());
 
         Transaction transaction = transactions.get(0);
-        assertEquals(BigDecimal.valueOf(100.11), transaction.getAmount());
+        assertAmountEquals(100.11, transaction.getAmount());
 
-        assertEquals(BigDecimal.ZERO.setScale(2, RoundingMode.UNNECESSARY), from.getBalance());
-        assertEquals(BigDecimal.valueOf(100.11), to.getBalance());
+        assertAmountEquals(0, from.getBalance());
+        assertAmountEquals(100.11, to.getBalance());
     }
 
     @Test
@@ -100,10 +97,10 @@ class TransferServiceImplTest {
         assertEquals(1, transactions.size());
 
         Transaction transaction = transactions.get(0);
-        assertEquals(BigDecimal.valueOf(2_222_222_222_222.22), transaction.getAmount());
+        assertAmountEquals(2_222_222_222_222.22, transaction.getAmount());
 
-        assertMoneyAmountEquals(BigDecimal.valueOf(6_666_666_666_666.66), from.getBalance());
-        assertMoneyAmountEquals(BigDecimal.valueOf(9_999_999_999_999.99), to.getBalance());
+        assertAmountEquals(6_666_666_666_666.66, from.getBalance());
+        assertAmountEquals(9_999_999_999_999.99, to.getBalance());
     }
 
     @Test
@@ -241,25 +238,6 @@ class TransferServiceImplTest {
         }
 
         assertEquals(0, transactionRepository.list().size());
-    }
-
-    @Test
-    void transfer_scale_should_be_2() {
-        Account from = createAccount(10.99, EUR);
-        Account to = createAccount(0.01, EUR);
-
-        transferService.transfer(new TransferRequest(
-                from.getId(), to.getId(), BigDecimal.valueOf(0.9900), EUR));
-
-        List<Transaction> transactions = transactionRepository.list();
-        assertEquals(1, transactions.size());
-
-        //all transaction details
-        Transaction transaction = transactions.get(0);
-        assertEquals(BigDecimal.valueOf(0.99), transaction.getAmount());
-
-        assertMoneyAmountEquals(BigDecimal.valueOf(10.00), from.getBalance());
-        assertMoneyAmountEquals(BigDecimal.valueOf(1.00), to.getBalance());
     }
 
     @Test

@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static engineering.pvl.bank.RestApiServer.ErrorResponse;
-import static engineering.pvl.bank.utils.CurrencyUtils.EUR;
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.MoneyUtils.EUR;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;

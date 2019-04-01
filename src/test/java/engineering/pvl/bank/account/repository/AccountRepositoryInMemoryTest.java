@@ -1,17 +1,16 @@
 package engineering.pvl.bank.account.repository;
 
 import engineering.pvl.bank.account.model.Account;
-import engineering.pvl.bank.utils.BankOperationException;
 import engineering.pvl.bank.utils.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.BankAssertions.assertAmountEquals;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,32 +50,11 @@ class AccountRepositoryInMemoryTest {
     }
 
     @Test
-    void create_account_with_too_big_precision_should_fail() {
-
-        Account account = makeAccount();
-        account.setBalance(BigDecimal.valueOf(1.123));
-        try {
-            repository.create(account);
-            fail();
-        } catch (BankOperationException ex) {
-            //ok
-        }
-    }
-
-    @Test
-    void create_account_with_too_big_zero_precision_should_strip_zeros() {
-        Account account = makeAccount();
-        account.setBalance(BigDecimal.valueOf(1.1).setScale(4, RoundingMode.UNNECESSARY));
-        repository.create(account);
-        assertEquals(BigDecimal.valueOf(1.1).setScale(2, RoundingMode.UNNECESSARY), account.getBalance());
-    }
-
-    @Test
     void subtractAmount_should_subtract_money_from_balance() {
         Account account = makeAccount();
         account.setBalance(BigDecimal.valueOf(100));
         repository.subtractAmount(account, BigDecimal.valueOf(5));
-        assertEquals(BigDecimal.valueOf(95).setScale(2, RoundingMode.UNNECESSARY), account.getBalance());
+        assertAmountEquals(95, account.getBalance());
     }
 
     @Test
@@ -84,7 +62,7 @@ class AccountRepositoryInMemoryTest {
         Account account = makeAccount();
         account.setBalance(BigDecimal.valueOf(100));
         repository.addAmount(account, BigDecimal.valueOf(5));
-        assertEquals(BigDecimal.valueOf(105).setScale(2, RoundingMode.UNNECESSARY), account.getBalance());
+        assertAmountEquals(105, account.getBalance());
     }
 
     @Test

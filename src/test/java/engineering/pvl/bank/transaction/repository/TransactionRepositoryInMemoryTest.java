@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +21,6 @@ class TransactionRepositoryInMemoryTest {
 
     @Test
     void getById_should_return_created_transaction() {
-
         Transaction transaction1 = makeTransaction();
         Transaction transaction2 = makeTransaction();
 

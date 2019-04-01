@@ -6,10 +6,10 @@ import engineering.pvl.bank.ServiceRegistry;
 import engineering.pvl.bank.account.model.Account;
 import engineering.pvl.bank.account.repository.AccountRepository;
 import engineering.pvl.bank.account.service.AccountCreateRequest;
+import engineering.pvl.bank.utils.RestApiTestServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import engineering.pvl.bank.utils.RestApiTestServer;
 
 import java.math.BigDecimal;
 import java.net.http.HttpResponse;
@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static engineering.pvl.bank.RestApiServer.ErrorResponse;
-import static engineering.pvl.bank.utils.BankAssertions.assertMoneyAmountEquals;
-import static engineering.pvl.bank.utils.CurrencyUtils.EUR;
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.BankAssertions.assertAmountEquals;
+import static engineering.pvl.bank.utils.MoneyUtils.EUR;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
+import static engineering.pvl.bank.utils.RestAssertions.assertResponse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static engineering.pvl.bank.utils.RestAssertions.assertResponse;
 
 class AccountRestIT {
 
@@ -99,7 +99,7 @@ class AccountRestIT {
         assertResponse(gson, 200, createdAccount, response);
 
         assertEquals("Account 1", createdAccount.getName());
-        assertMoneyAmountEquals(BigDecimal.ZERO, createdAccount.getBalance());
+        assertAmountEquals(0, createdAccount.getBalance());
         assertEquals(USD, createdAccount.getCurrency());
     }
 

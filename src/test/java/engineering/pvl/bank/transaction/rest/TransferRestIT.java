@@ -13,12 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.http.HttpResponse;
 
 import static engineering.pvl.bank.RestApiServer.ErrorResponse;
-import static engineering.pvl.bank.utils.CurrencyUtils.EUR;
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.BankAssertions.assertAmountEquals;
+import static engineering.pvl.bank.utils.MoneyUtils.EUR;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static engineering.pvl.bank.utils.RestAssertions.assertResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,14 +64,14 @@ class TransferRestIT {
         assertResponse(gson, 200, createdTransaction, response);
 
         assertNotNull(createdTransaction.getId());
-        assertEquals(BigDecimal.TEN, createdTransaction.getAmount());
+        assertAmountEquals(10, createdTransaction.getAmount());
         assertEquals(EUR, createdTransaction.getCurrency());
         assertEquals(account1.getId(), createdTransaction.getFromAccountId());
         assertEquals(account2.getId(), createdTransaction.getToAccountId());
         assertNotNull(createdTransaction.getCreated());
 
-        assertEquals(BigDecimal.valueOf(90).setScale(2, RoundingMode.UNNECESSARY), account1.getBalance());
-        assertEquals(BigDecimal.valueOf(110).setScale(2, RoundingMode.UNNECESSARY), account2.getBalance());
+        assertAmountEquals(90, account1.getBalance());
+        assertAmountEquals(110, account2.getBalance());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package engineering.pvl.bank.transaction.model;
 
 import engineering.pvl.bank.utils.DateTimeUtils;
+import engineering.pvl.bank.utils.MoneyUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class Transaction {
         this.id = UUID.randomUUID();
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
-        this.amount = amount;
+        this.amount = MoneyUtils.normalize(amount);
         this.currency = currency;
         this.created = DateTimeUtils.nowUTC();
     }
@@ -33,7 +34,7 @@ public class Transaction {
         this.id = id;
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
-        this.amount = amount;
+        this.amount = MoneyUtils.normalize(amount);
         this.currency = currency;
         this.created = created;
     }
@@ -73,5 +74,17 @@ public class Transaction {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", fromAccountId=" + fromAccountId +
+                ", toAccountId=" + toAccountId +
+                ", amount=" + amount +
+                ", currency=" + currency +
+                ", created=" + created +
+                '}';
     }
 }

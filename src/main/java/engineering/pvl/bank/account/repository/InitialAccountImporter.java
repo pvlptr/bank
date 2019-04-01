@@ -8,8 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static engineering.pvl.bank.utils.CurrencyUtils.*;
-
+import static engineering.pvl.bank.utils.MoneyUtils.*;
 
 public class InitialAccountImporter {
     private static final Logger log = LoggerFactory.getLogger(InitialAccountImporter.class);

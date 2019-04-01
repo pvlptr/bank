@@ -5,6 +5,7 @@ import engineering.pvl.bank.account.repository.AccountRepository;
 import engineering.pvl.bank.transaction.model.Transaction;
 import engineering.pvl.bank.transaction.repository.TransactionRepository;
 import engineering.pvl.bank.utils.BankOperationException;
+import engineering.pvl.bank.utils.MoneyUtils;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -27,12 +28,14 @@ public class TransferServiceImpl implements TransferService {
 
         Account fromAccount = accountRepository.getById(request.getFromAccountId());
         Account toAccount = accountRepository.getById(request.getToAccountId());
+        BigDecimal amount = MoneyUtils.normalize(request.getAmount());
+        Currency currency = request.getCurrency();
 
-        updateAccounts(request, fromAccount, toAccount);
+        updateAccounts(fromAccount, toAccount, amount, currency);
 
         Transaction transaction = new Transaction(
                 fromAccount.getId(), toAccount.getId(),
-                request.getAmount(), request.getCurrency());
+                amount, currency);
         return transactionRepository.create(transaction);
     }
 
@@ -55,17 +58,13 @@ public class TransferServiceImpl implements TransferService {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new BankOperationException("Amount must be greater then zero");
         }
-        amount = amount.stripTrailingZeros();
-        if (amount.scale() > 2) {
-            throw new BankOperationException("Maximum precision is two digits to the right of the decimal point");
-        }
 
         if (request.getFromAccountId().equals(request.getToAccountId())) {
             throw new BankOperationException("Account to same account is forbidden");
         }
     }
 
-    private void updateAccounts(TransferRequest request, Account fromAccount, Account toAccount) {
+    private void updateAccounts(Account fromAccount, Account toAccount, BigDecimal amount, Currency currency) {
         //to prevent deadlock, first lock account with smaller id first
         Account first;
         Account second;
@@ -82,9 +81,9 @@ public class TransferServiceImpl implements TransferService {
         synchronized (first) {
             //noinspection SynchronizationOnLocalVariableOrMethodParameter
             synchronized (second) {
-                validateTransfer(fromAccount, toAccount, request.getAmount(), request.getCurrency());
-                accountRepository.subtractAmount(fromAccount, request.getAmount());
-                accountRepository.addAmount(toAccount, request.getAmount());
+                validateTransfer(fromAccount, toAccount, amount, currency);
+                accountRepository.subtractAmount(fromAccount, amount);
+                accountRepository.addAmount(toAccount, amount);
             }
         }
     }

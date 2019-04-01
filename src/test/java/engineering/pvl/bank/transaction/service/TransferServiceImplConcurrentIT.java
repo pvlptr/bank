@@ -8,14 +8,14 @@ import engineering.pvl.bank.transaction.repository.TransactionRepository;
 import engineering.pvl.bank.utils.BankOperationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import engineering.pvl.bank.utils.BankAssertions;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static engineering.pvl.bank.utils.CurrencyUtils.EUR;
-import static engineering.pvl.bank.utils.CurrencyUtils.USD;
+import static engineering.pvl.bank.utils.BankAssertions.assertAmountEquals;
+import static engineering.pvl.bank.utils.MoneyUtils.EUR;
+import static engineering.pvl.bank.utils.MoneyUtils.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,7 +51,7 @@ class TransferServiceImplConcurrentIT {
     @Test
     void transfer_executed_concurrently_should_preserve_consistency() throws InterruptedException {
 
-        List<Account> accounts = prepareAccounts(CURRENCIES);
+        List<Account> accounts = prepareAccounts();
         List<Transaction> allTransactions = executeConcurrentTransfers(accounts);
 
         //check transactions
@@ -62,23 +62,23 @@ class TransferServiceImplConcurrentIT {
         //assertThat(allTransactions, containsInAnyOrder(transactionRepository.list().toArray()));
 
         //check balance total
-        BankAssertions.assertMoneyAmountEquals(TOTAL_AMOUNT_OF_MONEY, totalAccountBalance(accounts),
+        assertEquals(TOTAL_AMOUNT_OF_MONEY, totalAccountBalance(accounts),
                 "Total amount of money in bank should not changed");
 
         //check balance for each account
         Map<UUID, BigDecimal> balances = expectedBalances(allTransactions);
         for (Account a : accounts) {
-            BankAssertions.assertMoneyAmountEquals(balances.get(a.getId()), a.getBalance(),
+            assertAmountEquals(balances.getOrDefault(a.getId(), ACCOUNT_INITIAL_AMOUNT), a.getBalance(),
                     "Balance does note match for account " + a);
             assertTrue(a.getBalance().compareTo(BigDecimal.ZERO) >= 0,
                     "Balance of account can not be negative");
         }
     }
 
-    private List<Account> prepareAccounts(List<Currency> currencies) {
+    private List<Account> prepareAccounts() {
         List<Account> accounts = new ArrayList<>();
         for (int i = 0; i < ACCOUNT_COUNT; i++) {
-            accounts.add(createAccount("account-" + i, pickRandom(currencies)));
+            accounts.add(createAccount("account-" + i, pickRandom(CURRENCIES)));
         }
         return accounts;
     }

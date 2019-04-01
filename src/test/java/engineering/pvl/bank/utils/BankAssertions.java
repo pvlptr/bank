@@ -1,19 +1,27 @@
 package engineering.pvl.bank.utils;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BankAssertions {
-    public static void assertMoneyAmountEquals(BigDecimal expected, BigDecimal actual) {
-        assertMoneyAmountEquals(expected, actual, null);
+
+    private BankAssertions() {
     }
 
-    public static void assertMoneyAmountEquals(BigDecimal expected, BigDecimal actual, String msg) {
-        expected = expected != null ? expected.setScale(2, RoundingMode.UNNECESSARY) : null;
-        actual = actual != null ? actual.setScale(2, RoundingMode.UNNECESSARY) : null;
-        assertEquals(expected, actual, msg);
+    static public void assertAmountEquals(double expectedAmount, BigDecimal actualAmount, String message) {
+        assertAmountEquals(BigDecimal.valueOf(expectedAmount), actualAmount, message);
     }
 
+    static public void assertAmountEquals(double expectedAmount, BigDecimal actualAmount) {
+        assertAmountEquals(BigDecimal.valueOf(expectedAmount), actualAmount);
+    }
+
+    static public void assertAmountEquals(BigDecimal expectedAmount, BigDecimal actualAmount, String message) {
+        assertEquals(MoneyUtils.normalize(expectedAmount), actualAmount, message);
+    }
+
+    static public void assertAmountEquals(BigDecimal expectedAmount, BigDecimal actualAmount) {
+        assertEquals(MoneyUtils.normalize(expectedAmount), actualAmount);
+    }
 }

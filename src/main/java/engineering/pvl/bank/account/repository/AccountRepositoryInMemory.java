@@ -1,11 +1,9 @@
 package engineering.pvl.bank.account.repository;
 
 import engineering.pvl.bank.account.model.Account;
-import engineering.pvl.bank.utils.BankOperationException;
 import engineering.pvl.bank.utils.ResourceNotFoundException;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,7 +18,6 @@ public class AccountRepositoryInMemory implements AccountRepository {
             //service layer should not allow creating existing account
             throw new RuntimeException("Account with id " + prev.getId() + " already exists");
         }
-        normalizeBalance(account);
         return account;
     }
 
@@ -44,7 +41,6 @@ public class AccountRepositoryInMemory implements AccountRepository {
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (account) {
             account.setBalance(account.getBalance().add(amount));
-            normalizeBalance(account);
             return account;
         }
     }
@@ -55,17 +51,9 @@ public class AccountRepositoryInMemory implements AccountRepository {
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (account) {
             account.setBalance(account.getBalance().subtract(amount));
-            normalizeBalance(account);
             return account;
         }
     }
 
-    private void normalizeBalance(Account account) {
-        BigDecimal balance = account.getBalance().stripTrailingZeros();
-        if (balance.scale() > 2) {
-            throw new BankOperationException("Maximum precision is two digits to the right of the decimal point");
-        }
-        balance = balance.setScale(2, RoundingMode.UNNECESSARY);
-        account.setBalance(balance);
-    }
+
 }

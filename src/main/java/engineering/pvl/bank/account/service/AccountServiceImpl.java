@@ -13,7 +13,6 @@ public final class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
     }
 
-
     @Override
     public Account create(AccountCreateRequest request) {
         validateRequest(request);
@@ -28,7 +27,6 @@ public final class AccountServiceImpl implements AccountService {
         if (request.getCurrency() == null) {
             throw new BankOperationException("Currency is required");
         }
-
     }
 
 }

@@ -19,7 +19,9 @@ public class TransactionRest {
 
     public Transaction getById(UUID id) {
         log.debug("Getting transaction by id: {}", id);
-        return transactionRepository.getById(id);
+        Transaction transaction = transactionRepository.getById(id);
+        log.trace("Transaction by id: {}", transaction);
+        return transaction;
     }
 
     public List<Transaction> list() {

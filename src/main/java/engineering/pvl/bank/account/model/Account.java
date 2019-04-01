@@ -1,5 +1,7 @@
 package engineering.pvl.bank.account.model;
 
+import engineering.pvl.bank.utils.MoneyUtils;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Objects;
@@ -26,7 +28,7 @@ public final class Account {
     public Account(UUID id, String name, BigDecimal balance, Currency currency) {
         this.id = id;
         this.name = name;
-        this.balance = balance;
+        this.balance = MoneyUtils.normalize(balance);
         this.currency = currency;
     }
 
@@ -47,7 +49,7 @@ public final class Account {
     }
 
     public synchronized void setBalance(BigDecimal balance) {
-        this.balance = balance;
+        this.balance = MoneyUtils.normalize(balance);
     }
 
     public Currency getCurrency() {

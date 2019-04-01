@@ -13,7 +13,7 @@ RESTful API for money transfers between accounts.
     mvn clean install
 
 ## Running
-    java -jar target\money-1.0-SNAPSHOT.jar
+    java -jar target\bank-1.0-SNAPSHOT.jar
     
 ## REST API
 ### List all accounts
