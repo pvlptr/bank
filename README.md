@@ -16,10 +16,10 @@ RESTful API for money transfers between accounts.
     java -jar target\money-1.0-SNAPSHOT.jar
     
 ## REST API
- - list all accounts
-    - http://localhost:18081/api/1.0/accounts
-    - GET
-    - response example:
+### List all accounts
+- http://localhost:18081/api/1.0/accounts
+- GET
+- response example:
         ```json
             [
               {
@@ -42,10 +42,10 @@ RESTful API for money transfers between accounts.
               }
             ]
         ```        
- - view single account by id
-    - http://localhost:18081/api/1.0/accounts/11111111-1111-1111-1111-111111111111
-    - GET
-    - response example:
+### View single account by id
+- http://localhost:18081/api/1.0/accounts/11111111-1111-1111-1111-111111111111
+- GET
+- response example:
         ```json
             {
               "id": "11111111-1111-1111-1111-111111111111",
@@ -54,17 +54,17 @@ RESTful API for money transfers between accounts.
               "currency": "EUR"
             }
         ```
- - create account
-    - http://localhost:18081/api/1.0/accounts
-    - POST
-    - request example:
+### Create account
+- http://localhost:18081/api/1.0/accounts
+- POST
+- request example:
         ```json
               {
                 "name": "Another new account",
                 "currency": "EUR"
               }
         ```
-    - response example:
+- response example:
         ```json
             {
                 "id": "50a093f1-84e3-480d-b45a-76b66fbd47a7",
@@ -73,10 +73,10 @@ RESTful API for money transfers between accounts.
                 "currency": "EUR"
             }
         ```        
- - transfer money from one account to another
-    - http://localhost:18081/api/1.0/transfers
-    - POST
-    - request example:
+### Transfer money from one account to another
+- http://localhost:18081/api/1.0/transfers
+- POST
+- request example:
         ```json
               {
                 "fromAccountId": "11111111-1111-1111-1111-111111111111",
@@ -85,7 +85,7 @@ RESTful API for money transfers between accounts.
                 "currency": "EUR"
               }
         ```
-    - response example (transaction):
+- response example (transaction):
         ```json
             {
                 "id": "863ac56b-c152-4bb1-a46a-2470066ac4ce",
@@ -96,10 +96,10 @@ RESTful API for money transfers between accounts.
                 "created": "2019-04-01T12:35:32.663"
             }
         ``` 
- - list all transactions
-    - http://localhost:18081/api/1.0/transactions
-    - GET
-    - response example (transaction):
+### List all transactions
+- http://localhost:18081/api/1.0/transactions
+- GET
+- response example (transaction):
         ```json
             [
                 {
@@ -112,10 +112,10 @@ RESTful API for money transfers between accounts.
                 }
             ]
         ``` 
- - view single transaction
-    - http://localhost:18081/api/1.0/transactions/:id
-    - GET
-    - response example (transaction):
+### View single transaction
+- http://localhost:18081/api/1.0/transactions/:id
+- GET
+- response example (transaction):
         ```json
               {
                 "fromAccountId": "11111111-1111-1111-1111-111111111111",
@@ -129,9 +129,9 @@ RESTful API for money transfers between accounts.
     - Account not found by id, 
     - Transaction not found by id
     - Unknown REST API url
- - 400 - Insufficient funds:
+- 400 - Insufficient funds:
     - Money transfer from one account to another - in account "from" not enough money
- - 400 - Invalid operation:
+- 400 - Invalid operation:
     - Invalid money precision (amount should not have more than 2 digits after decimal point)
     - Invalid money amount (negative)
     - Invalid UUID structure
