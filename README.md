@@ -140,6 +140,11 @@ RESTful API for money transfers between accounts.
     - Transfer with currency conversion
     - Max account balance reached (10_000_000_000_000.0)  
 
+### Integration tests for API usage
+- AccountRestIT
+- TransactionRestIT
+- TransferRestIT
+
 ## Technologies
 - JAVA
 - Maven
