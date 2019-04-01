@@ -4,10 +4,8 @@ RESTful API for money transfers between accounts.
 
 ## Rest API functionality
 - create account (with zero balance)
-- 
 
 ## Prerequisites
-
 - Java 12
 - Maven 3+
 
@@ -15,8 +13,7 @@ RESTful API for money transfers between accounts.
     mvn clean install
 
 ## Running
-    java -jar target\money-1.0-SNAPSHOT.jar    
-   
+    java -jar target\money-1.0-SNAPSHOT.jar
     
 ## REST API
  - list all accounts
@@ -128,7 +125,7 @@ RESTful API for money transfers between accounts.
               }
         ``` 
 
-## Built With
+## Technologies
 * JAVA
 * Maven
 * SparkFramework - rest end points (with embedded jetty)
