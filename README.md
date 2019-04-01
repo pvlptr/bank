@@ -20,7 +20,7 @@ RESTful API for money transfers between accounts.
 - http://localhost:18081/api/1.0/accounts
 - GET
 - response example:
-    ```json
+```json
     [
         {
             "id": "11111111-1111-1111-1111-111111111111",
