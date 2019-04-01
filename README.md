@@ -124,13 +124,28 @@ RESTful API for money transfers between accounts.
                 "currency": "EUR"
               }
         ``` 
+## Errors
+- 404 - Resource not found:
+    - Account not found by id, 
+    - Transaction not found by id
+    - Unknown REST API url
+ - 400 - Insufficient funds:
+    - Money transfer from one account to another - in account "from" not enough money
+ - 400 - Invalid operation:
+    - Invalid money precision (amount should not have more than 2 digits after decimal point)
+    - Invalid money amount (negative)
+    - Invalid UUID structure
+    - Missing required field
+    - Transfer to same account
+    - Transfer with currency conversion
+    - Max account balance reached (10_000_000_000_000.0)  
 
 ## Technologies
 - JAVA
 - Maven
 - SparkFramework - rest end points (with embedded jetty)
-- junit5 + hamcrest - testing (unit and integration tests)
+- JUnit5 + hamcrest - testing (unit and integration tests)
 - inmemory key/value data store implemented using java native inmemory structures 
-    (ConcurrentHashMap + synchronization to implement atomicity, consistency and isolation)
+    (ConcurrentHashMap + synchronization for implement atomicity, consistency and isolation)
 - sf4j + logback - logging
 
