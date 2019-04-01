@@ -126,11 +126,11 @@ RESTful API for money transfers between accounts.
         ``` 
 
 ## Technologies
-* JAVA
-* Maven
-* SparkFramework - rest end points (with embedded jetty)
-* junit5 + hamcrest - testing (unit and integration tests)
-* inmemory key-value data store implemented using java native inmemory structures 
+- JAVA
+- Maven
+- SparkFramework - rest end points (with embedded jetty)
+- junit5 + hamcrest - testing (unit and integration tests)
+- inmemory key/value data store implemented using java native inmemory structures 
     (ConcurrentHashMap + synchronization to implement atomicity, consistency and isolation)
-* sf4j + logback - logging
+- sf4j + logback - logging
 
