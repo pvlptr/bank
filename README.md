@@ -146,6 +146,6 @@ RESTful API for money transfers between accounts.
 - SparkFramework - rest end points (with embedded jetty)
 - JUnit5 + hamcrest - testing (unit and integration tests)
 - inmemory key/value data store implemented using java native inmemory structures 
-    (ConcurrentHashMap + synchronization for implement atomicity, consistency and isolation)
+    (ConcurrentHashMap + synchronized blocks to provide atomicity, consistency and isolation)
 - sf4j + logback - logging
 
