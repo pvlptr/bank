@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Successful bank transfer operation.
  */
-public class Transaction {
+public final class Transaction {
     private final UUID id;
 
     private final UUID fromAccountId;

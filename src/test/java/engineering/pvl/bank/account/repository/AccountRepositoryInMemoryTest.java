@@ -5,7 +5,6 @@ import engineering.pvl.bank.utils.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,10 +79,10 @@ class AccountRepositoryInMemoryTest {
 
         assertEquals(0, repository.list().size());
 
-        List<Account> accounts = new ArrayList<>();
-        accounts.add(repository.create(makeAccount()));
-        accounts.add(repository.create(makeAccount()));
-        accounts.add(repository.create(makeAccount()));
+        List<Account> accounts = List.of(
+                repository.create(makeAccount()),
+                repository.create(makeAccount()),
+                repository.create(makeAccount()));
 
         assertEquals(3, repository.list().size());
         assertThat(repository.list(), containsInAnyOrder(accounts.toArray()));

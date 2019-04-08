@@ -6,7 +6,6 @@ import engineering.pvl.bank.utils.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,27 +50,37 @@ class TransactionRepositoryInMemoryTest {
 
     @Test
     void getById_of_not_existing_transaction_should_fail() {
-        try {
-            repository.getById(UUID.randomUUID());
-            fail();
-        } catch (ResourceNotFoundException ex) {
-            //ok
-        }
+        // all try, fail, catch tests should be rewritten using assertThrows
+        assertThrows(ResourceNotFoundException.class,
+                () -> repository.getById(UUID.randomUUID()));
     }
 
     @Test
     void list_should_return_all_created_transactions() {
         assertEquals(0, repository.list().size());
 
-        List<Transaction> transactions = new ArrayList<>();
-
-        transactions.add(repository.create(makeTransaction()));
-        transactions.add(repository.create(makeTransaction()));
-        transactions.add(repository.create(makeTransaction()));
-        transactions.add(repository.create(makeTransaction()));
+        List<Transaction> transactions = List.of(
+                repository.create(makeTransaction()),
+                repository.create(makeTransaction()),
+                repository.create(makeTransaction()),
+                repository.create(makeTransaction()));
 
         assertEquals(4, repository.list().size());
         assertThat(repository.list(), containsInAnyOrder(transactions.toArray()));
+    }
+
+    @Test
+    void list_should_ignore_newly_created_transactions() {
+        assertEquals(0, repository.list().size());
+
+        List<Transaction> transactions = List.of(repository.create(makeTransaction()));
+
+        List<Transaction> actualList = repository.list();
+        assertEquals(1, actualList.size());
+        assertThat(actualList, containsInAnyOrder(transactions.toArray()));
+
+        repository.create(makeTransaction());
+        assertEquals(1, actualList.size());
     }
 
     private Transaction makeTransaction() {

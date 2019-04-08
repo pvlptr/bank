@@ -21,7 +21,7 @@ public class MoneyUtils {
 
         BigDecimal result = amount.stripTrailingZeros();
         if (result.scale() > 2) {
-            throw new BankOperationException("Maximum precision for money is two digits to the right of the decimal point");
+            throw new BankOperationException("Maximum precision for money is two digits to the right of the decimal point. Got " + result);
         }
         result = result.setScale(2, RoundingMode.UNNECESSARY);
         return result;

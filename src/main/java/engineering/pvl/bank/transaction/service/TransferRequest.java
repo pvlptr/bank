@@ -12,7 +12,6 @@ public class TransferRequest {
 
     public TransferRequest(UUID fromAccountId, UUID toAccountId,
                            BigDecimal amount, Currency currency) {
-
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;

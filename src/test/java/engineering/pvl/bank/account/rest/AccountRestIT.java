@@ -67,7 +67,7 @@ class AccountRestIT {
         Account account1 = accountRepository.create(new Account(UUID.randomUUID(), "Account 1", BigDecimal.TEN, USD));
         Account account2 = accountRepository.create(new Account(UUID.randomUUID(), "Account 2", BigDecimal.ONE, EUR));
 
-        response = testServer.get("");
+        response = testServer.get();
         assertEquals(200, response.statusCode());
         assertThat(accountListFromBody(response), containsInAnyOrder(account1, account2));
     }
