@@ -71,7 +71,7 @@ class AccountRepositoryInMemoryTest {
             repository.getById(UUID.randomUUID());
             fail();
         } catch (ResourceNotFoundException ex) {
-            //ok
+            //ok1
         }
     }
 
