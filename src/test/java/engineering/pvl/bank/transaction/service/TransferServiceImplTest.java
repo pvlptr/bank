@@ -257,7 +257,7 @@ class TransferServiceImplTest {
     }
 
     @Test
-    void transfer_with_negative_amount_should_fail() {
+    void transfer_with_zero_amount_should_fail() {
         Account account = createAccount(100, EUR);
 
         try {
@@ -273,7 +273,7 @@ class TransferServiceImplTest {
     }
 
     @Test
-    void transfer_with_zero_amount_should_fail() {
+    void transfer_with_negative_amount_should_fail() {
         Account account = createAccount(100, EUR);
 
         try {
