@@ -1,6 +1,6 @@
 # Bank
 
-RESTful API for money transfers between accounts.
+RESTful API for money transfers between accounts
 
 ## Rest API functionality
 - create account (with zero balance)
