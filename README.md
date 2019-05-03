@@ -1,4 +1,3 @@
-testff
 # Bank
 
 RESTful API for money transfers between accounts
